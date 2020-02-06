@@ -1,5 +1,14 @@
 <?php
 
+	// Setting up
+function appSetup($config=array())
+{
+    if($config['update_session_cookie_settings'] == 'yes'){
+        ini_set('session.gc_maxlifetime', strtotime($config['auth_time'], 0));
+        session_set_cookie_params(strtotime($config['auth_time'], 0));
+    }
+}
+
 	// Fucntion for generating log
 function logger($log_msg = '')
 {
@@ -78,17 +87,6 @@ function back()
 {
 	$token_data = getTokenData();
 	return ltrim($token_data['url'], '/');
-}
-
-	// Setting up
-function appSetup($config=array())
-{
-    if($config['update_session_cookie_settings'] == 'yes'){
-        ini_set('session.gc_maxlifetime', strtotime($config['auth_time'], 0));
-        session_set_cookie_params(strtotime($config['auth_time'], 0));
-    }
-    session_start();
-    $headers = apache_request_headers();
 }
 
 	// Sanitizing parameters
