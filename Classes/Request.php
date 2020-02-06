@@ -71,6 +71,12 @@ class Request
     setcookie('remember_me', NULL, time()-3600);
   }
 
+    // Get apache header data
+  public static function headers(){
+    $headers = apache_request_headers();
+    return $headers;
+  }
+
 }
 
 ?>
