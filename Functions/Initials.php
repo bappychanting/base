@@ -1,7 +1,7 @@
 <?php
 
 	// Setting up
-function appSetup($config=array())
+function serverSetup($config=array())
 {
     if($config['update_session_cookie_settings'] == 'yes'){
         ini_set('session.gc_maxlifetime', strtotime($config['auth_time'], 0));
