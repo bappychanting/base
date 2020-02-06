@@ -90,14 +90,14 @@ class Migration
   }
 
     // Generate Views
-  public static function migrationView()
+  public static function migrationView($action_url='')
   {
     $feedback = '';
     if(self::$app_env != 'dev'){
       $feedback = '<h4 class="text-muted"><i class="far fa-frown pr-2"></i>Oops..</h4><p class="text-danger">Migration is unavialable at the moment!</p>';
     }
     else{
-      $feedback .= '<form class="mb-5 mx-5 execute-form" method="post" action="execute_queries">';
+      $feedback .= '<form class="mb-5 mx-5 execute-form" method="post" action="'.$action_url.'">';
       $feedback .= '<div class="form-group">';
       $feedback .= '<label for="key">Please enter project execution key to continue..</label>';
       $feedback .= '<input type="password" class="form-control" id="key" name="app-key" placeholder="KEY" pattern=".{3,}" required title="3 characters minimum">';

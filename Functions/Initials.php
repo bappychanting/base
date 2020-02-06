@@ -80,6 +80,45 @@ function back()
 	return ltrim($token_data['url'], '/');
 }
 
+	// Setting up
+function appSetup($config=array())
+{
+    if($config['update_session_cookie_settings'] == 'yes'){
+        ini_set('session.gc_maxlifetime', strtotime($config['auth_time'], 0));
+        session_set_cookie_params(strtotime($config['auth_time'], 0));
+    }
+    session_start();
+    $headers = apache_request_headers();
+}
+
+	// Sanitizing parameters
+function sanitize()
+{
+        // Sanitize url parameters
+	if(!empty($_GET)){
+		foreach ($_GET as $key => $value) {
+			$key = preg_replace('/[^-a-zA-Z0-9_]/', '', $key);
+			$value = preg_replace('/[^-a-zA-Z0-9_]/', '', $value);
+			$_GET[$key] = $value;
+		}
+	}
+
+		// Check and set post parameters
+	if (!empty($_POST)) {
+		if(!empty($headers['X-CSRF-TOKEN']) && array_key_exists($headers['X-CSRF-TOKEN'], $_SESSION['tokens'])){
+			logger('Ajax call recieved to url: '.$_SERVER['REQUEST_URI'].'!');
+		}
+		elseif(!empty($_POST['_token']) && array_key_exists($_POST['_token'], $_SESSION['tokens'])){ 
+			$_SESSION['processing_token'] = $_POST['_token']; 
+			$_SESSION['tokens'][$_SESSION['processing_token']]['posts'] = $_POST; 
+		}
+		else{
+			unset($_POST);
+			throw new Exception('Token mismatch!');
+		}
+	}
+}
+
 	// Declaring controller method calling function
 function call($route_url =''){
 	
