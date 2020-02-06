@@ -92,6 +92,8 @@ function back()
 	// Sanitizing parameters
 function sanitize()
 {
+	$headers = apache_request_headers();
+	
         // Sanitize url parameters
 	if(!empty($_GET)){
 		foreach ($_GET as $key => $value) {
