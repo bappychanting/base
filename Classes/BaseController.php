@@ -57,17 +57,24 @@ class BaseController
     }
 
     if(file_exists($_file)){
-
       if(isset($_SESSION['processing_token'])){
-        include($_file);
-        unset($_SESSION['processing_token']);
+        $token_data = getTokenData();
+        if($token_data['url'] != $_SERVER['REQUEST_URI']){
+          unset($_SESSION['processing_token']);
+          $generated_token = bin2hex(random_bytes(32));
+          $_SESSION['tokens'][$generated_token] = ['url' => $_SERVER['REQUEST_URI'], 'time' => time(), 'csrf_token' => $generated_token];
+          include($_file);
+        }
+        else{
+          include($_file);
+          unset($_SESSION['processing_token']);
+        }
       }
       else{
         $generated_token = bin2hex(random_bytes(32));
         $_SESSION['tokens'][$generated_token] = ['url' => $_SERVER['REQUEST_URI'], 'time' => time(), 'csrf_token' => $generated_token];
         include($_file);
       }
-      
     }
     else{
       throw new \Exception('View '.$_file.' not found!');
