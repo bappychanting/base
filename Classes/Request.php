@@ -66,9 +66,9 @@ class Request
   }
 
     // Delete cookie
-  public static function deleteCookie($cookie){
+  public static function deleteCookie($cookie, $expire='3600'){
     unset($_COOKIE[$cookie]);
-    setcookie('remember_me', NULL, time()-3600);
+    setcookie('remember_me', NULL, time()-$expire);
   }
 
     // Get apache header data
