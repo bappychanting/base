@@ -105,7 +105,7 @@ class Mail
       }
     }     
     
-    $mail->addReplyTo(MAIL_USERNAME);
+    $mail->addReplyTo($this->getSender());
 
     if(!empty($this->getCarbonCopies())){
       foreach ($this->getCarbonCopies() as $cc) {
