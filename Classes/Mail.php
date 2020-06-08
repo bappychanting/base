@@ -136,13 +136,13 @@ class Mail
   }
 
     // Create the message body
-  public function createMessage(){
+  public function createMessage($mailXml='mail'){
 
-    if (file_exists("resources/markups/mail.xml")){
-      $xml = simplexml_load_file("resources/markups/mail.xml") or die(logger('ERROR: Can  not load xml file'));
+    if (file_exists('resources/markups/'.$mailXml.'.xml')){
+      $xml = simplexml_load_file('resources/markups/'.$mailXml.'.xml') or die(logger('ERROR: Can  not load xml file'));
     }
     else{ 
-      throw new \Exception("&quot;mail.xml&quot; not found! This file is required for parsing mail classes. Please create a &quot;mail.xml&quot; file in the &quot;resources > markup&quot; folder containing markup for &headings&quot;, &quot;paragraphs&quot;, &quot;background&quot;  tags, and add styles for classes in the &quot;styling&quot; tag!");
+      throw new \Exception('&quot;'.$mailXml.'.xml&quot; not found! This file is required for parsing mail classes. Please create a xml file in the &quot;resources > markup&quot; folder containing markup for &quot;headings&quot;, &quot;paragraphs&quot;, &quot;background&quot;  tags, and add styles for classes in the &quot;styling&quot; tag!');
     }
 
     $header = $xml->header;

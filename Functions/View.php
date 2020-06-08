@@ -242,7 +242,8 @@ function get_url()
   // Function for checking route
 function route_is($param='')
 {
-  if(strpos($_SERVER['REQUEST_URI'], $param) !== false){
+  $base_uri = explode('?', $_SERVER['REQUEST_URI'], 2);
+  if(strpos($base_uri[0], $param) !== false){
     return true;
   }
   else{

@@ -114,7 +114,7 @@ class BaseController
       die();   
     }
     else{
-      throw new \Exception($err_type.' | '.$message);
+      throw new \Exception($message, $err_type);
     }
 
   }
