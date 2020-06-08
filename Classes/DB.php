@@ -365,7 +365,7 @@ class DB
   }
 
     // function for generating pagination pages
-  public function generatePages($page=1, $totalPages=1, $url='javascript:void(0);'){  
+  public function generatePages($page=1, $totalPages=1, $url='javascript:void(0);', $pagXml='pagination'){  
 
     $param = '?page';
 
@@ -376,11 +376,11 @@ class DB
 
     $url = $url.$param; 
     
-    if (file_exists("resources/markups/pagination.xml")){
-      $xml = simplexml_load_file("resources/markups/pagination.xml") or die(logger('ERROR: Can  not load xml file'));
+    if (file_exists('resources/markups/'.$pagXml.'.xml')){
+      $xml = simplexml_load_file('resources/markups/'.$pagXml.'.xml') or die(logger('ERROR: Can  not load xml file'));
     }
     else{ 
-      throw new \Exception("&quot;pagination.xml&quot; not found! This file is required for parsing pagination classes. Please create a &quot;pagination.xml&quot; file in the &quot;resources > markup&quot; folder containing markup for &quotnav&quot;, &quot;ul&quot;, &quot;li&quot;, and &quot;a&quot; tags!");
+      throw new \Exception('&quot;'.$pagXml.'.xml&quot; not found! This file is required for parsing pagination classes. Please create a &quot;pagination.xml&quot; file in the &quot;resources > markup&quot; folder containing markup for &quotnav&quot;, &quot;ul&quot;, &quot;li&quot;, and &quot;a&quot; tags!');
     }
 
     $pagination = '<nav class="'.$xml->nav_class.'"><ul class="'.$xml->ul_class.'">';
