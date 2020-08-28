@@ -179,7 +179,7 @@ class Migration
     </div>    
 
     <p class="small brand">
-    <a href="https://www.codecubeit.com/" class="text-muted">codecube.com</a> 
+    <a href='https://www.codecubeit.com/' rel='nofollow' class='text-muted'>CodeCube IT Solutions</a>
     </p>           
 
     <!-- JQuery -->
