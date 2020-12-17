@@ -53,7 +53,11 @@ function script($directory='')
 }
 
   // Function for showing image
-function image($src, $alt='', $misc = array()){
+function image($src, $alt='', $misc = array(), $thumb = ''){
+
+  if($thumb != '')
+    $src = substr($src, 0, strrpos($src, ".")).$thumb.'.'.end(explode('.', $src));
+  
   $image = '<img src="';
   if(file_exists($src)){
     $image .= (APP_ENV == 'dev') ? APP_URL.'/'.$src."?".time()  : APP_URL.'/'.$src;
