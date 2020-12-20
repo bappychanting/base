@@ -4,8 +4,8 @@
     "description": "Base files for CodeCube Framework.",
     "homepage": "http://mhasan.amarneta.com/codecube-framework/",
     "support": {
-        "issues": "https://github.com/Bappy25/base/issues",
-        "source": "https://github.com/Bappy25/base"
+        "issues": "https://github.com/bappychanting/base/issues",
+        "source": "https://github.com/bappychanting/base"
     },
     "keywords": [
         "php",
