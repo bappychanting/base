@@ -56,7 +56,7 @@ function script($directory='')
 function image($src, $alt='', $misc = array(), $thumb = ''){
 
   if($thumb != '')
-    $src = substr($src, 0, strrpos($src, ".")).$thumb.'.'.end(explode('.', $src));
+    $src = substr($src, 0, strrpos($src, ".")).$thumb.'.'.substr(strrchr($src, '.'), 1);
   
   $image = '<img src="';
   if(file_exists($src)){
