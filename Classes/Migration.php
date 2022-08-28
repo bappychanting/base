@@ -25,13 +25,13 @@ class Migration
 
       // Check connection
       if (mysqli_connect_errno()){
-        array_push($messages, "Error: Failed to connect to MySQL! " . mysqli_connect_error());
+        array_push($messages, ['type' => "danger", 'text' => "Error: Failed to connect to MySQL! " . mysqli_connect_error()]);
       }
 
       if(isset($_POST['reset_migration']) && $_POST['reset_migration'] == "reset"){
         $status = mysqli_query($con, "DROP TABLE IF EXISTS `migrations`");
         if($status){
-          array_push($messages, 'Success: Existing Migration table has been removed!');
+          array_push($messages, ['type' => "success", 'text' => 'Success: Existing Migration table has been removed!']);
         }
       }
 
@@ -45,7 +45,7 @@ class Migration
           PRIMARY KEY (`id`)
         )");
         if($status){
-          array_push($messages, 'Success: Migration table has been created!');
+          array_push($messages, ['type' => "success", 'text' => 'Success: Migration table has been created!']);
         }
       }
 
@@ -63,17 +63,17 @@ class Migration
 
         foreach ($queries as $key=>$value){
           if(in_array($key, $all_keys)){
-            array_push($messages, 'Warning: Migration `'.ucwords(str_replace("_", " ", $key)).'` already exists! Migration skipped.');
+            array_push($messages, ['type' => "warning", 'text' => 'Warning: Migration `'.ucwords(str_replace("_", " ", $key)).'` already exists! Migration skipped.']);
           }
           else{
               // Execute Query
             $status = mysqli_query($con, $value);
             if($status){
               mysqli_query($con, 'INSERT INTO migrations (migration, batch) VALUES ("'.$key.'", '.time().')');
-              array_push($messages, 'Success: Query `'.ucwords(str_replace("_", " ", $key)).'` executed successfully!');
+              array_push($messages, ['type' => "success", 'text' => 'Success: Query `'.ucwords(str_replace("_", " ", $key)).'` executed successfully!']);
             }
             else{
-              array_push($messages, 'Error: Query `'.ucwords(str_replace("_", " ", $key)).'` failed! Reason: '.mysqli_error($con));
+              array_push($messages, ['type' => "danger", 'text' => 'Error: Query `'.ucwords(str_replace("_", " ", $key)).'` failed! Reason: '.mysqli_error($con)]);
             }   
           }
         }
@@ -82,7 +82,7 @@ class Migration
       mysqli_close($con);
     }
     else{
-      array_push($messages, 'Error: Mismatched values in project environment configuration!');
+      array_push($messages, ['type' => "danger", 'text' => 'Error: Mismatched values in project environment configuration!']);
     }
 
     return $messages;
@@ -213,8 +213,8 @@ class Migration
               var message = JSON.parse(xhr.responseText);
               for( var i = 0; i<message.length; i++){
                 var info = $("<p />");
-                info.attr('class',"text-info");
-                info.html('<i class="far fa-hand-point-right pr-2"></i>'+message[i]);
+                info.attr('class',"text-"+message[i]['type']);
+                info.html('<i class="far fa-hand-point-right pr-2"></i>'+message[i]['text']);
                 info.hide();
                 $('#feedback').append(info);
                 time += 100;
