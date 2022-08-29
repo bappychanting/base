@@ -8,6 +8,14 @@ class Sitemap
 
     public function __construct() {
         $this->dom = new \DOMDocument();
+        if(!file_exists('sitemap.xml')){
+          $content = '<?xml version="1.0" encoding="UTF-8"?>';
+          $content .= '<?xml-stylesheet type="text/xsl" href="https://gitcdn.xyz/repo/pedroborges/xml-sitemap-stylesheet/master/sitemap.xsl"?>';
+          $content .= '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"></urlset>';
+          $fp = fopen("sitemap.xml","wb");
+          fwrite($fp,$content);
+          fclose($fp);
+        }
     }
 
     private function appendUrl($location, $last_modified){
