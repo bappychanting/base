@@ -178,7 +178,7 @@ function route($route_url, $parameters= array())
 }
 
   // Function for manipulate url string
-function urlStr($route_url, $parameters= array())
+function urlStr($route_url, $parameters= array(), $excludes= array())
 {
   $routes = include("routes/web.php");
 
@@ -198,7 +198,7 @@ function urlStr($route_url, $parameters= array())
       }
       if(!empty($_GET)){
         foreach($_GET as $key=>$value){
-          if(empty($parameters[$key])){
+          if(empty($parameters[$key]) && !in_array($key, $excludes)){
             $link .= '&'.$key.'='.$value;
           }
         }
