@@ -90,9 +90,38 @@ function back()
 }
 
 	// Sanitizing parameters
-function sanitize()
+function sanitize($route_url='', $routes=[])
 {
 	$headers = apache_request_headers();
+
+		// Check if route is a sweet url 
+	if(!empty($route_url) && !array_key_exists($route_url, $routes)){
+		$url_keywords = explode("/", $route_url);
+		foreach($routes as $route=>$controller){
+			if(strpos($route, '{') !== false && strpos($route, '}') !== false){
+				$route_keywords = explode("/", $route);
+				if(count($url_keywords) == count($route_keywords)){
+					$route_found = true;
+					for($i=0; $i<count($route_keywords); $i++){
+						if(strpos($route_keywords[$i], '{') == 0  && strpos($route_keywords[$i], '}') == (strlen($route_keywords[$i])-1))
+							continue;
+						if($route_keywords[$i] != $url_keywords[$i]){
+							$route_found = false; break;
+						}
+					}
+					if($route_found){
+						foreach($route_keywords as $key=>$keyword){
+							if( strpos($keyword, '{') == 0  && strpos($keyword, '}') == (strlen($keyword)-1) ){
+								$_GET[substr($keyword, 1, -1)] = $url_keywords[$key];
+							}
+						}
+						$route_url = $route;
+						break;
+					}
+				}
+			}
+		}
+	}
 	
         // Sanitize url parameters
 	if(!empty($_GET)){
@@ -117,6 +146,8 @@ function sanitize()
 			throw new Exception('Token mismatch!');
 		}
 	}
+
+	return $route_url;
 }
 
 	// Declaring controller method calling function
