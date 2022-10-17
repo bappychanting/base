@@ -155,9 +155,21 @@ function route($route_url, $parameters= array())
 
   if(array_key_exists($route_url, $routes)){
 
-    $link = APP_URL.'/'.$route_url;
+    if(!empty($parameters) && strpos($route_url, '{') !== false && strpos($route_url, '}') !== false){
+      $url_keywords = explode("/", $route_url);
+      foreach($url_keywords as $key=>$keyword){
+        if(array_key_exists(substr($keyword, 1, -1), $parameters)){
+          $url_keywords[$key] = $parameters[substr($keyword, 1, -1)];
+          unset($parameters[substr($keyword, 1, -1)]);
+        }
+      }
+      $link = APP_URL.'/'.implode("/", $url_keywords);
+    }
+    else{
+      $link = APP_URL.'/'.$route_url;
+    }
 
-    if(!empty($parameters)){
+    if(count($parameters) > 0){
       $link .= '?';
       $count = 1;
       foreach($parameters as $key=>$value){
@@ -184,9 +196,21 @@ function urlStr($route_url, $parameters= array(), $excludes= array())
 
   if(array_key_exists($route_url, $routes)){
 
-    $link = APP_URL.'/'.$route_url;
+    if(!empty($parameters) && strpos($route_url, '{') !== false && strpos($route_url, '}') !== false){
+      $url_keywords = explode("/", $route_url);
+      foreach($url_keywords as $key=>$keyword){
+        if(array_key_exists(substr($keyword, 1, -1), $parameters)){
+          $url_keywords[$key] = $parameters[substr($keyword, 1, -1)];
+          unset($parameters[substr($keyword, 1, -1)]);
+        }
+      }
+      $link = APP_URL.'/'.implode("/", $url_keywords);
+    }
+    else{
+      $link = APP_URL.'/'.$route_url;
+    }
 
-    if(!empty($parameters)){
+    if(count($parameters) > 0){
       $link .= '?';
       $count = 1;
       foreach($parameters as $key=>$value){
@@ -213,20 +237,36 @@ function urlStr($route_url, $parameters= array(), $excludes= array())
 
 }
 
-  // Function for getting route
-function get_route()
+  // Function for checking route
+function route_is($param='')
 {
+  $route_is = true;
+  $keywords = explode('/', $param);
+  $current_url = explode('/', substr(explode('?', $_SERVER['REQUEST_URI'], 2)[0], 1));
+  foreach($keywords as $key=>$value){
+    if(strpos($value, '{') == 0  && strpos($value, '}') == (strlen($value)-1))
+      continue;
+    if($value != $current_url[$key]){
+      $route_is = false; 
+      break;
+    }
+  }
+  return $route_is;
 
-  $route = str_replace(APP_URL.'/', "", $_SERVER['REQUEST_URI']);
+}
 
-  if(substr($route, -1) == '/' || count($_GET) > 0){
+  // Function for getting current route
+function get_route($replace= array())
+{
+  $route = substr(explode('?', $_SERVER['REQUEST_URI'], 2)[0], 1);
 
-    $route = explode('/', $route);
-
-    unset($route[count($route) - 1]);
-
-    $route = implode('/', $route);
-
+  if(count($replace) > 0){
+    $keywords = explode('/', $route);
+    foreach($keywords as $key=>$keyword){
+      if(array_key_exists($key, $replace))
+        $keywords[$key] = $replace[$key];
+    }
+    $route = implode('/', $keywords);
   }
 
   return $route;
@@ -240,19 +280,6 @@ function get_url()
   $url = APP_URL.$_SERVER['REQUEST_URI'];
 
   return $url;
-
-}
-
-  // Function for checking route
-function route_is($param='')
-{
-  $base_uri = explode('?', $_SERVER['REQUEST_URI'], 2);
-  if(strpos($base_uri[0], $param) !== false){
-    return true;
-  }
-  else{
-    return false; 
-  }
 
 }
 
