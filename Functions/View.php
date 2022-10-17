@@ -189,8 +189,8 @@ function route($route_url, $parameters= array())
 
 }
 
-  // Function for manipulate url string
-function urlStr($route_url, $parameters= array(), $excludes= array())
+  // Function for manipulating get variables in route 
+function routeUrl($route_url, $parameters= array(), $excludes= array())
 {
   $routes = include("routes/web.php");
 
