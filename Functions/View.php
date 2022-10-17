@@ -158,7 +158,7 @@ function route($route_url, $parameters= array())
     if(!empty($parameters) && strpos($route_url, '{') !== false && strpos($route_url, '}') !== false){
       $url_keywords = explode("/", $route_url);
       foreach($url_keywords as $key=>$keyword){
-        if(array_key_exists(substr($keyword, 1, -1), $parameters)){
+        if(strpos($keyword, '{') == 0  && strpos($keyword, '}') == (strlen($keyword)-1) && array_key_exists(substr($keyword, 1, -1), $parameters)){
           $url_keywords[$key] = $parameters[substr($keyword, 1, -1)];
           unset($parameters[substr($keyword, 1, -1)]);
         }
@@ -199,7 +199,7 @@ function urlStr($route_url, $parameters= array(), $excludes= array())
     if(!empty($parameters) && strpos($route_url, '{') !== false && strpos($route_url, '}') !== false){
       $url_keywords = explode("/", $route_url);
       foreach($url_keywords as $key=>$keyword){
-        if(array_key_exists(substr($keyword, 1, -1), $parameters)){
+        if(strpos($keyword, '{') == 0  && strpos($keyword, '}') == (strlen($keyword)-1) && array_key_exists(substr($keyword, 1, -1), $parameters)){
           $url_keywords[$key] = $parameters[substr($keyword, 1, -1)];
           unset($parameters[substr($keyword, 1, -1)]);
         }
