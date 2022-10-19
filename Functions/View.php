@@ -255,6 +255,37 @@ function route_is($param='')
 
 }
 
+  // Function for generating api link
+function api_route($route_url, $parameters= array())
+{
+  $routes = include("routes/api.php");
+
+  $urls = include('config/url.php');
+
+  if(array_key_exists($route_url, $routes)){
+
+    $link = APP_URL.'/'.$urls['api_url'].'/'.$route_url;
+
+    if(!empty($parameters)){
+      $link .= '?';
+      $count = 1;
+      foreach($parameters as $key=>$value){
+        if($count > 1){
+          $link .= '&';
+        }
+        $link .= $key.'='.$value;
+        $count++;
+      }
+    }
+
+    return $link;
+  }
+  else{
+    throw new Exception('Route '.$route_url.' does not exist!');
+  }
+
+}
+
   // Function for getting current route
 function get_route($replace= array())
 {
