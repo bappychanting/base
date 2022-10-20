@@ -1,5 +1,12 @@
 <?php
 
+  /*
+  |--------------------------------------------------------------------------
+  | Functions to help in framework views
+  |--------------------------------------------------------------------------
+  |
+  */
+
   // Function for creating current page title
 function title($title='')
 {
