@@ -28,9 +28,9 @@
             "Base\\": "Classes"
         },
         "files": [
-            "Functions/Initials.php",
-            "Functions/Inheritance.php",
-            "Functions/View.php"
+            "Functions/Framework.php",
+            "Functions/Templating.php",
+            "Functions/Views.php"
         ]
     },
     "minimum-stability": "dev",

@@ -1,4 +1,4 @@
-<?php   
+<?php
 
   // Function for creating current page title
 function title($title='')
@@ -34,7 +34,7 @@ function icon($directory='')
 function style($directory='')
 {
   if(APP_ENV == 'dev')
-    $location = APP_URL.'/resources/assets/'.$directory.'?'.mt_rand();
+	$location = APP_URL.'/resources/assets/'.$directory.'?'.mt_rand();
   else
     $location = APP_URL.'/resources/assets/'.$directory;
 
@@ -146,114 +146,6 @@ function inherits($_location='')
   else{
     throw new Exception('Resource '.$_file.' not found!');
   }
-}
-
-  // Function for generating link
-function route($route_url, $parameters= array())
-{
-  $routes = include("routes/web.php");
-
-  if(array_key_exists($route_url, $routes)){
-
-    $link = APP_URL.'/'.$route_url;
-
-    if(!empty($parameters)){
-      $link .= '?';
-      $count = 1;
-      foreach($parameters as $key=>$value){
-        if($count > 1){
-          $link .= '&';
-        }
-        $link .= $key.'='.$value;
-        $count++;
-      }
-    }
-
-    return $link;
-  }
-  else{
-    throw new Exception('Route '.$route_url.' does not exist!');
-  }
-
-}
-
-  // Function for manipulate url string
-function urlStr($route_url, $parameters= array(), $excludes= array())
-{
-  $routes = include("routes/web.php");
-
-  if(array_key_exists($route_url, $routes)){
-
-    $link = APP_URL.'/'.$route_url;
-
-    if(!empty($parameters)){
-      $link .= '?';
-      $count = 1;
-      foreach($parameters as $key=>$value){
-        if($count > 1){
-          $link .= '&';
-        }
-        $link .= $key.'='.$value;
-        $count++;
-      }
-      if(!empty($_GET)){
-        foreach($_GET as $key=>$value){
-          if(empty($parameters[$key]) && !in_array($key, $excludes)){
-            $link .= '&'.$key.'='.$value;
-          }
-        }
-      }
-    }
-
-    return $link;
-  }
-  else{
-    throw new Exception('Route '.$route_url.' does not exist!');
-  }
-
-}
-
-  // Function for getting route
-function get_route()
-{
-
-  $route = str_replace(APP_URL.'/', "", $_SERVER['REQUEST_URI']);
-
-  if(substr($route, -1) == '/' || count($_GET) > 0){
-
-    $route = explode('/', $route);
-
-    unset($route[count($route) - 1]);
-
-    $route = implode('/', $route);
-
-  }
-
-  return $route;
-
-}
-
-  // Function for getting current url
-function get_url()
-{
-
-  $url = APP_URL.$_SERVER['REQUEST_URI'];
-
-  return $url;
-
-}
-
-  // Function for checking route
-function route_is($param='')
-{
-  $base_uri = explode('?', $_SERVER['REQUEST_URI'], 2);
-  if(strpos($base_uri[0], $param) !== false){
-    return true;
-  }
-  else{
-    return false; 
-  }
-
 }
 
 ?>
