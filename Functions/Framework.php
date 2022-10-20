@@ -185,6 +185,13 @@ function getErrors()
   return $_SESSION['tokens'][$token_data['csrf_token']]['errors'];
 }
 
+  // get return url in controller
+function back()
+{
+  $token_data = getTokenData();
+  return ltrim($token_data['url'], '/');
+}
+
   // Function for generating link
 function route($route_url, $parameters= array())
 {
@@ -338,13 +345,6 @@ function get_url()
 {
   $url = APP_URL.$_SERVER['REQUEST_URI'];
   return $url;
-}
-
-  // get return url
-function back()
-{
-  $token_data = getTokenData();
-  return ltrim($token_data['url'], '/');
 }
 
 ?>
