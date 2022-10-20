@@ -182,7 +182,7 @@ function setErrors($errors)
 function getErrors()
 {
   $token_data = getTokenData();
-  return $_SESSION['tokens'][$token_data['csrf_token']]['errors'];
+  return empty($_SESSION['tokens'][$token_data['csrf_token']]['errors']) ? NULL : $_SESSION['tokens'][$token_data['csrf_token']]['errors'];
 }
 
   // get return url in controller
