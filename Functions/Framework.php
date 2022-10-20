@@ -1,5 +1,12 @@
 <?php  
 
+  /*
+  |--------------------------------------------------------------------------
+  | Essential Functions to initialize and work with the system
+  |--------------------------------------------------------------------------
+  |
+  */
+
   // Setting up
 function serverSetup($config=array())
 {
@@ -80,13 +87,6 @@ function getErrors()
 {
   $token_data = getTokenData();
   return $_SESSION['tokens'][$token_data['csrf_token']]['errors'];
-}
-
-    // get return url
-function back()
-{
-  $token_data = getTokenData();
-  return ltrim($token_data['url'], '/');
 }
 
   // Sanitizing parameters
@@ -177,6 +177,13 @@ function call($route_url =''){
     throw new Exception('Controller &quot;'.$controller.'&quot; not found!');
   }
 }
+
+  /*
+  |--------------------------------------------------------------------------
+  | Functions to be used in views and controllers
+  |--------------------------------------------------------------------------
+  |
+  */
 
   // Function for generating link
 function route($route_url, $parameters= array())
@@ -331,6 +338,13 @@ function get_url()
 {
   $url = APP_URL.$_SERVER['REQUEST_URI'];
   return $url;
+}
+
+  // get return url
+function back()
+{
+  $token_data = getTokenData();
+  return ltrim($token_data['url'], '/');
 }
 
 ?>
