@@ -2,7 +2,7 @@
 
   /*
   |--------------------------------------------------------------------------
-  | Essential Functions to initialize and work with the system
+  | Essential Functions to initialize the system and to be used system-wide
   |--------------------------------------------------------------------------
   |
   */
@@ -36,26 +36,6 @@ function logger($log_msg = '')
   }
 }
 
-  // Fucntion for getting locale
-function locale($loc_file, $loc_key, $words= array())
-{
-  if(file_exists('config/app.php')){
-    $config = include('config/app.php');
-    $_file = 'resources/locale/'.$config['locale'].'/'.$loc_file.'.php';
-    if(file_exists($_file)){
-      $locale = include($_file);
-      $string = $locale[$loc_key];
-      if(!empty($words)){
-        foreach ($words as $key => $value) {
-          $string = str_replace(':'.$key, $value, $string);
-        }
-      }
-      return $string;
-    }
-  }
-  return '';
-}
-
   // Get Field Data
 function getTokenData()
 {
@@ -73,20 +53,6 @@ function getTokenData()
     $token_data = end($tokens);
   }
   return $token_data;
-}
-
-    // Errors setter
-function setErrors($errors)
-{
-  $token_data = getTokenData();
-  $_SESSION['tokens'][$token_data['csrf_token']]['errors'] = $errors; 
-}
-
-  // Errors getter
-function getErrors()
-{
-  $token_data = getTokenData();
-  return $_SESSION['tokens'][$token_data['csrf_token']]['errors'];
 }
 
   // Sanitizing parameters
@@ -184,6 +150,40 @@ function call($route_url =''){
   |--------------------------------------------------------------------------
   |
   */
+
+  // Fucntion for getting locale
+function locale($loc_file, $loc_key, $words= array())
+{
+  if(file_exists('config/app.php')){
+    $config = include('config/app.php');
+    $_file = 'resources/locale/'.$config['locale'].'/'.$loc_file.'.php';
+    if(file_exists($_file)){
+      $locale = include($_file);
+      $string = $locale[$loc_key];
+      if(!empty($words)){
+        foreach ($words as $key => $value) {
+          $string = str_replace(':'.$key, $value, $string);
+        }
+      }
+      return $string;
+    }
+  }
+  return '';
+}
+
+    // Errors setter
+function setErrors($errors)
+{
+  $token_data = getTokenData();
+  $_SESSION['tokens'][$token_data['csrf_token']]['errors'] = $errors; 
+}
+
+  // Errors getter
+function getErrors()
+{
+  $token_data = getTokenData();
+  return $_SESSION['tokens'][$token_data['csrf_token']]['errors'];
+}
 
   // Function for generating link
 function route($route_url, $parameters= array())
