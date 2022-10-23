@@ -119,7 +119,7 @@ class BaseController
       exit();
     }
     else{
-      throw new Exception('Route '.$route_url.' does not exist!');
+      self::abort(500, 'Route '.$route_url.' does not exist!');
     }
 
   }
