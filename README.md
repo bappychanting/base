@@ -1,5 +1,5 @@
 # CodeCube
-![Codecube Logo](https://repository-images.githubusercontent.com/113841763/761d274b-0bc4-4013-b999-c1b25f1c2ffe| width=100)
+![Codecube Logo](https://user-images.githubusercontent.com/22908406/197393844-742ec334-eccb-4c52-bc0c-5192ad418a8c.png)
 ###### An easy & lightweight PHP framework inspired by Laravel.
 Aims of this framework are to
 - Provide a foundation to creative PHP developers for faster dynamic website development. Small, hand-built libraries that the framework is based on guarantee minimum performance overhead.  
