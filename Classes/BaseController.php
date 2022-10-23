@@ -85,22 +85,42 @@ class BaseController
   public static function redirect($route_url, $parameters= array())
   {
 
-    $link = APP_URL.'/'.$route_url;
+    $routes = include("routes/web.php");
 
-    if(!empty($parameters)){
-      $link .= '?';
-      $count = 1;
-      foreach($parameters as $key=>$value){
-        if($count > 1){
-          $link .= '&';
+    if(array_key_exists($route_url, $routes)){
+
+      if(!empty($parameters) && strpos($route_url, '{') !== false && strpos($route_url, '}') !== false){
+        $url_keywords = explode("/", $route_url);
+        foreach($url_keywords as $key=>$keyword){
+          if(strpos($keyword, '{') == 0  && strpos($keyword, '}') == (strlen($keyword)-1) && array_key_exists(substr($keyword, 1, -1), $parameters)){
+            $url_keywords[$key] = $parameters[substr($keyword, 1, -1)];
+            unset($parameters[substr($keyword, 1, -1)]);
+          }
         }
-        $link .= $key.'='.$value;
-        $count++;
+        $link = APP_URL.'/'.implode("/", $url_keywords);
       }
-    }
+      else{
+        $link = APP_URL.'/'.$route_url;
+      }
 
-    header("Location: ".$link); 
-    exit();
+      if(!empty($parameters)){
+        $link .= '?';
+        $count = 1;
+        foreach($parameters as $key=>$value){
+          if($count > 1){
+            $link .= '&';
+          }
+          $link .= $key.'='.$value;
+          $count++;
+        }
+      }
+
+      header("Location: ".$link); 
+      exit();
+    }
+    else{
+      self::abort(500, 'Route '.$route_url.' does not exist!');
+    }
 
   }
 

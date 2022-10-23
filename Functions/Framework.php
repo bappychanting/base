@@ -1,5 +1,12 @@
 <?php  
 
+  /*
+  |--------------------------------------------------------------------------
+  | Essential Functions to initialize the system and to be used system-wide
+  |--------------------------------------------------------------------------
+  |
+  */
+
   // Setting up
 function serverSetup($config=array())
 {
@@ -29,26 +36,6 @@ function logger($log_msg = '')
   }
 }
 
-  // Fucntion for getting locale
-function locale($loc_file, $loc_key, $words= array())
-{
-  if(file_exists('config/app.php')){
-    $config = include('config/app.php');
-    $_file = 'resources/locale/'.$config['locale'].'/'.$loc_file.'.php';
-    if(file_exists($_file)){
-      $locale = include($_file);
-      $string = $locale[$loc_key];
-      if(!empty($words)){
-        foreach ($words as $key => $value) {
-          $string = str_replace(':'.$key, $value, $string);
-        }
-      }
-      return $string;
-    }
-  }
-  return '';
-}
-
   // Get Field Data
 function getTokenData()
 {
@@ -66,27 +53,6 @@ function getTokenData()
     $token_data = end($tokens);
   }
   return $token_data;
-}
-
-    // Errors setter
-function setErrors($errors)
-{
-  $token_data = getTokenData();
-  $_SESSION['tokens'][$token_data['csrf_token']]['errors'] = $errors; 
-}
-
-  // Errors getter
-function getErrors()
-{
-  $token_data = getTokenData();
-  return $_SESSION['tokens'][$token_data['csrf_token']]['errors'];
-}
-
-    // get return url
-function back()
-{
-  $token_data = getTokenData();
-  return ltrim($token_data['url'], '/');
 }
 
   // Sanitizing parameters
@@ -178,6 +144,54 @@ function call($route_url =''){
   }
 }
 
+  /*
+  |--------------------------------------------------------------------------
+  | Functions to be used in views and controllers
+  |--------------------------------------------------------------------------
+  |
+  */
+
+  // Fucntion for getting locale
+function locale($loc_file, $loc_key, $words= array())
+{
+  if(file_exists('config/app.php')){
+    $config = include('config/app.php');
+    $_file = 'resources/locale/'.$config['locale'].'/'.$loc_file.'.php';
+    if(file_exists($_file)){
+      $locale = include($_file);
+      $string = $locale[$loc_key];
+      if(!empty($words)){
+        foreach ($words as $key => $value) {
+          $string = str_replace(':'.$key, $value, $string);
+        }
+      }
+      return $string;
+    }
+  }
+  return '';
+}
+
+    // Errors setter
+function setErrors($errors)
+{
+  $token_data = getTokenData();
+  $_SESSION['tokens'][$token_data['csrf_token']]['errors'] = $errors; 
+}
+
+  // Errors getter
+function getErrors()
+{
+  $token_data = getTokenData();
+  return empty($_SESSION['tokens'][$token_data['csrf_token']]['errors']) ? NULL : $_SESSION['tokens'][$token_data['csrf_token']]['errors'];
+}
+
+  // get return url in controller
+function back()
+{
+  $token_data = getTokenData();
+  return ltrim($token_data['url'], '/');
+}
+
   // Function for generating link
 function route($route_url, $parameters= array())
 {
@@ -210,6 +224,35 @@ function route($route_url, $parameters= array())
         $count++;
       }
     }
+    return $link;
+  }
+  else{
+    throw new Exception('Route '.$route_url.' does not exist!');
+  }
+}
+
+  // Function for generating api link
+function api_route($route_url, $parameters= array())
+{
+  $routes = include("routes/api.php");
+  $urls = include('config/url.php');
+
+  if(array_key_exists($route_url, $routes)){
+
+    $link = APP_URL.'/'.$urls['api_url'].'/'.$route_url;
+
+    if(!empty($parameters)){
+      $link .= '?';
+      $count = 1;
+      foreach($parameters as $key=>$value){
+        if($count > 1){
+          $link .= '&';
+        }
+        $link .= $key.'='.$value;
+        $count++;
+      }
+    }
+
     return $link;
   }
   else{
@@ -278,35 +321,6 @@ function route_is($param='')
     }
   }
   return $route_is;
-}
-
-  // Function for generating api link
-function api_route($route_url, $parameters= array())
-{
-  $routes = include("routes/api.php");
-  $urls = include('config/url.php');
-
-  if(array_key_exists($route_url, $routes)){
-
-    $link = APP_URL.'/'.$urls['api_url'].'/'.$route_url;
-
-    if(!empty($parameters)){
-      $link .= '?';
-      $count = 1;
-      foreach($parameters as $key=>$value){
-        if($count > 1){
-          $link .= '&';
-        }
-        $link .= $key.'='.$value;
-        $count++;
-      }
-    }
-
-    return $link;
-  }
-  else{
-    throw new Exception('Route '.$route_url.' does not exist!');
-  }
 }
 
   // Function for getting current route
