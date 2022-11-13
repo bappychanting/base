@@ -60,7 +60,10 @@ function script($directory='')
 }
 
   // Function for showing image
-function image($src, $alt='', $misc = array(), $thumb = ''){
+function image($src, $alt='', $misc = array(), $thumb = '')
+{
+
+  $config = include("config/app.php");
 
   if($thumb != '')
     $src = substr($src, 0, strrpos($src, ".")).$thumb.'.'.substr(strrchr($src, '.'), 1);
@@ -71,7 +74,7 @@ function image($src, $alt='', $misc = array(), $thumb = ''){
   }
   else{
     logger('ERROR: File '.$src.' missing!');
-    $image .= "https://via.placeholder.com/150?text=".ucwords(str_replace(" ","+",$alt));
+    $image .= $config['placeholder'];
   } 
   $image .= '" alt="'.$alt.'"';
   if(!empty($misc)){
