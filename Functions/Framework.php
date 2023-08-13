@@ -7,16 +7,22 @@
   |
   */
 
-  // Setting up
+// Setting up
 function serverSetup($config=array())
 {
-    if($config['update_session_cookie_settings'] == 'yes'){
-        ini_set('session.gc_maxlifetime', strtotime($config['auth_time'], 0));
-        session_set_cookie_params(strtotime($config['auth_time'], 0));
-    }
+  if($config['error_reporting'] == 'on'){
+    ini_set('display_errors', 1);
+    ini_set('display_startup_errors', 1);
+    error_reporting(E_ALL);
+  }
+
+  if($config['update_session_cookie_settings'] == 'yes'){
+    ini_set('session.gc_maxlifetime', strtotime($config['auth_time'], 0));
+    session_set_cookie_params(strtotime($config['auth_time'], 0));
+  }
 }
 
-  // Fucntion for generating log
+// Fucntion for generating log
 function logger($log_msg = '')
 {
   if(file_exists('config/app.php')){
@@ -36,7 +42,7 @@ function logger($log_msg = '')
   }
 }
 
-  // Get Field Data
+// Get Field Data
 function getTokenData()
 {
   $token_data = array();
@@ -55,12 +61,12 @@ function getTokenData()
   return $token_data;
 }
 
-  // Sanitizing parameters
+// Sanitizing parameters
 function sanitize($route_url='', $routes=[])
 {
   $headers = apache_request_headers();
 
-    // Check if route is a sweet url 
+  // Check if route is a sweet url 
   if(!empty($route_url) && !array_key_exists($route_url, $routes)){
     $url_keywords = explode("/", $route_url);
     foreach($routes as $route=>$controller){
@@ -89,7 +95,7 @@ function sanitize($route_url='', $routes=[])
     }
   }
   
-        // Sanitize url parameters
+  // Sanitize url parameters
   if(!empty($_GET)){
     foreach ($_GET as $key => $value) {
       $key = preg_replace('/[^-a-zA-Z0-9_]/', '', $key);
@@ -98,7 +104,7 @@ function sanitize($route_url='', $routes=[])
     }
   }
 
-    // Check and set post parameters
+  // Check and set post parameters
   if (!empty($_POST)) {
     if(!empty($headers['X-CSRF-TOKEN']) && array_key_exists($headers['X-CSRF-TOKEN'], $_SESSION['tokens'])){
       logger('Ajax call recieved to url: '.$_SERVER['REQUEST_URI'].'!');
@@ -116,7 +122,7 @@ function sanitize($route_url='', $routes=[])
   return $route_url;
 }
 
-  // Declaring controller method calling function
+// Declaring controller method calling function
 function call($route_url =''){
   
   $get_controller_action = explode("@", $route_url);
@@ -151,7 +157,7 @@ function call($route_url =''){
   |
   */
 
-  // Fucntion for getting locale
+// Fucntion for getting locale
 function locale($loc_file, $loc_key, $words= array())
 {
   if(file_exists('config/app.php')){
@@ -171,28 +177,28 @@ function locale($loc_file, $loc_key, $words= array())
   return '';
 }
 
-    // Errors setter
+// Errors setter
 function setErrors($errors)
 {
   $token_data = getTokenData();
   $_SESSION['tokens'][$token_data['csrf_token']]['errors'] = $errors; 
 }
 
-  // Errors getter
+// Errors getter
 function getErrors()
 {
   $token_data = getTokenData();
   return empty($_SESSION['tokens'][$token_data['csrf_token']]['errors']) ? NULL : $_SESSION['tokens'][$token_data['csrf_token']]['errors'];
 }
 
-  // get return url in controller
+// get return url in controller
 function back()
 {
   $token_data = getTokenData();
   return ltrim($token_data['url'], '/');
 }
 
-  // Function for generating link
+// Function for generating link
 function route($route_url, $parameters= array())
 {
   $routes = include("routes/web.php");
@@ -231,7 +237,7 @@ function route($route_url, $parameters= array())
   }
 }
 
-  // Function for generating api link
+// Function for generating api link
 function api_route($route_url, $parameters= array())
 {
   $routes = include("routes/api.php");
@@ -260,7 +266,7 @@ function api_route($route_url, $parameters= array())
   }
 }
 
-  // Function for manipulating get variables in route 
+// Function for manipulating get variables in route 
 function routeUrl($route_url, $parameters= array(), $excludes= array())
 {
   $routes = include("routes/web.php");
@@ -306,7 +312,7 @@ function routeUrl($route_url, $parameters= array(), $excludes= array())
   }
 }
 
-  // Function for checking route
+// Function for checking route
 function route_is($param='')
 {
   $route_is = true;
@@ -323,7 +329,7 @@ function route_is($param='')
   return $route_is;
 }
 
-  // Function for getting current route
+// Function for getting current route
 function get_route($replace= array())
 {
   $route = substr(explode('?', $_SERVER['REQUEST_URI'], 2)[0], 1);
@@ -340,7 +346,7 @@ function get_route($replace= array())
   return $route;
 }
 
-  // Function for getting current url
+// Function for getting current url
 function get_url()
 {
   $url = APP_URL.$_SERVER['REQUEST_URI'];

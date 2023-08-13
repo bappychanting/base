@@ -7,26 +7,26 @@
   |
   */
 
-  // Function for creating current page title
+// Function for creating current page title
 function title($title='')
 {
   return empty($title) ? ucwords(APP_NAME) : $title.' || '.ucwords(APP_NAME);
 }
 
-    // Function for creating csrf token
+// Function for creating csrf token
 function csrf_token()
 {
   $token_data = getTokenData();
   return $token_data['csrf_token'];  
 }
 
-  // Function for returning source of asset
+// Function for returning source of asset
 function asset($src){
   $src = (APP_ENV == 'dev') ? APP_URL.'/'.$src."?".time()  : APP_URL.'/'.$src; 
   return $src;
 }
 
-  // Function for generating icon location
+// Function for generating icon location
 function icon($directory='')
 {
   if(APP_ENV == 'dev')
@@ -37,18 +37,18 @@ function icon($directory='')
   return '<link rel="icon" href="'.$location.'" type="image/x-icon">';
 }
 
-  // Function for generating style location
+// Function for generating style location
 function style($directory='')
 {
   if(APP_ENV == 'dev')
-	$location = APP_URL.'/resources/assets/'.$directory.'?'.mt_rand();
+  $location = APP_URL.'/resources/assets/'.$directory.'?'.mt_rand();
   else
     $location = APP_URL.'/resources/assets/'.$directory;
 
   return '<link href="'.$location.'" rel="stylesheet">';
 }
 
-  // Function for generating script location
+// Function for generating script location
 function script($directory='')
 {
   if(APP_ENV == 'dev')
@@ -59,7 +59,7 @@ function script($directory='')
   return '<script type="text/javascript" src="'.$location.'"></script>';
 }
 
-  // Function for showing image
+// Function for showing image
 function image($src, $alt='', $misc = array(), $thumb = '')
 {
 
@@ -86,7 +86,7 @@ function image($src, $alt='', $misc = array(), $thumb = '')
   return $image;
 }
 
-  // Function for showing old field values
+// Function for showing old field values
 function old_val($key='')
 {
   $token_data = getTokenData();
@@ -96,7 +96,7 @@ function old_val($key='')
   return NULL;
 }
 
-    // Function for showing field values
+// Function for showing field values
 function field_val($key='')
 {
   $token_data = getTokenData();
@@ -106,7 +106,7 @@ function field_val($key='')
   return NULL;
 }
 
-    // Function for showing field errors
+// Function for showing field errors
 function field_err($key='')
 {
   $token_data = getTokenData();
@@ -116,7 +116,7 @@ function field_err($key='')
   return NULL;
 }
 
-  // Function for including view
+// Function for including view
 function append($_location='', $_data='')
 {
   $_location_array =  explode(".",$_location);
@@ -139,7 +139,7 @@ function append($_location='', $_data='')
   }
 }
 
-  // Function for extending layout
+// Function for extending layout
 function inherits($_location='')
 {
   $_location_array =  explode(".",$_location);
@@ -155,6 +155,22 @@ function inherits($_location='')
   }
   else{
     throw new Exception('Resource '.$_file.' not found!');
+  }
+}
+
+// Function for debugging
+function dd($var, $details=FALSE)
+{
+  if($details){
+    die(var_dump($var));
+  }
+  else{
+    if(is_array($var)){
+      die(print_r($var));
+    }
+    else{
+      die($var);
+    }
   }
 }
 

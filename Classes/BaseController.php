@@ -7,7 +7,7 @@ use Base\Request;
 class BaseController 
 {
 
-    // Function for calling guards
+  // Function for calling guards
   public static function guard($guard='', $parameters = array()){
     if(!empty($guard)){
       if (file_exists("app/Http/Guards/".$guard.".php")){
@@ -21,7 +21,7 @@ class BaseController
     }
   }
 
-    // Fucntion for getting config
+  // Fucntion for getting config
   public static function config($location='')
   {
     $locationArray =  explode(".",$location);
@@ -41,7 +41,7 @@ class BaseController
     }
   }
 
-    // Function for generating view
+  // Function for generating view
   public static function view($_location='', $_data=array())
   {
     $_location_array =  explode(".",$_location);
@@ -117,10 +117,11 @@ class BaseController
       }
     }
     header("Location: ".$link); 
+    exit;
   }
 
-    // Function for showing error
-  public static function abort($err_type = 404, $message = 'The page you are looking for is not found!'){
+  // Function for showing error
+  public static function abort($err_type = 404, $message = ''){
 
     $err_file = 'resources/views/errors/'.$err_type.'.php';
 

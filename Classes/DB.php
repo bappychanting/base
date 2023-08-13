@@ -6,7 +6,7 @@ use PDO;
 class DB
 {
 
-    // Declaring database query variables
+  // Declaring database query variables
   private $bindInt;
   private $instance;
   private $table;
@@ -18,7 +18,7 @@ class DB
   private $sqlQuery;
   private $execArray;
   
-    // Declaring database credentials
+  // Declaring database credentials
   private $dbhost;
   private $dbname; 
   private $dbuser;
@@ -60,7 +60,7 @@ class DB
   {
 
   }
-    // Destruct Variables
+  // Destruct Variables
   private function destroy()
   {
     $this->queryString = '';
@@ -68,7 +68,7 @@ class DB
     $this->execArray = array();
   }
 
-    // Returning database instance
+  // Returning database instance
   public function getInstance() 
   {
     if (!isset($this->instance)) {
@@ -78,7 +78,7 @@ class DB
     return $this->instance;     
   }
 
-    // Binding integer to numeric values
+  // Binding integer to numeric values
   public function bindInteger() 
   {
     if (!isset($this->bindInt)) {
@@ -87,7 +87,7 @@ class DB
     return $this->bindInt;
   }
 
-    // Add conditions and string to query
+  // Add conditions and string to query
   private function addQuery($row, $op, $value){
     if(!empty($row) && !empty($op)){
       $this->queryString .= ' ';
@@ -102,7 +102,7 @@ class DB
     }
   }
 
-    // Check if a column exists
+  // Check if a column exists
   private function checkColumn($column){
     $pdo = $this->getInstance();
     if(count($pdo->query("SHOW COLUMNS FROM `".$this->table."` LIKE '".$column."'")->fetchAll())){
@@ -110,21 +110,21 @@ class DB
     } 
   }
 
-    // Selecting table
+  // Selecting table
   public function table($table='')
   {
     $this->table = $table;
     return $this;
   }
 
-    // Including Condition String
+  // Including Condition String
   public function condition($str = '')
   {
     $this->queryString .= ' '.$str.' ';
     return $this;
   }
 
-    // Including WHERE conditions
+  // Including WHERE conditions
   public function where($row='', $op='', $value='')
   {
     $this->queryString .= 'WHERE';
@@ -132,7 +132,7 @@ class DB
     return $this;
   }
 
-    // Including AND conditions
+  // Including AND conditions
   public function and($row='', $op='', $value='')
   {
     $this->queryString .= 'AND';
@@ -140,7 +140,7 @@ class DB
     return $this;
   }
 
-    // Including OR conditions
+  // Including OR conditions
   public function or($row='', $op='', $value='')
   {
     $this->queryString .= 'OR';
@@ -148,7 +148,7 @@ class DB
     return $this;
   }
 
-    // Including NOT conditions
+  // Including NOT conditions
   public function not($row='', $op='', $value='')
   {
     $this->queryString .= ' ';
@@ -157,7 +157,7 @@ class DB
     return $this;
   }
 
-    // Including Order By Statement
+  // Including Order By Statement
   public function orderBy($row='created_at', $order='ASC')
   {
     if(strpos($this->orderby, 'ORDER BY') === false){
@@ -170,7 +170,7 @@ class DB
     return $this;
   }
 
-    // Function for limiting result and setting pagination
+  // Function for limiting result and setting pagination
   public function limit($limit=15)
   {
     $page = isset($_GET["page"]) ? intval($_GET["page"]) : 1; 
@@ -181,7 +181,7 @@ class DB
     return $this;
   }
 
-    // Values for insert
+  // Values for insert
   public function data($values= array())
   {
     if(count($values) > 0){
@@ -204,7 +204,7 @@ class DB
     return $this;
   }
 
-    // Values for update
+  // Values for update
   public function set($values= array())
   {
     $this->queryString .= 'SET ';
@@ -225,7 +225,7 @@ class DB
     return $this;
   }
 
-    // Get data from raw query from database
+  // Get data from raw query from database
   public function get($raw='')
   {
     $pdo = $this->getInstance();
@@ -235,7 +235,7 @@ class DB
     return $data;
   }
 
-    // Insert/Update/Delete from raw query in database
+  // Insert/Update/Delete from raw query in database
   public function write($raw='')
   {
     $pdo = $this->getInstance();
@@ -244,7 +244,7 @@ class DB
     return $status;
   }
 
-    // Read from database
+  // Read from database
   public function read()
   {
     $pdo = $this->getInstance();
@@ -270,7 +270,7 @@ class DB
     return $data;
   }
 
-    // Returning total data of last query
+  // Returning total data of last query
   public function getTotal() 
   {
     $total = $this->total;
@@ -278,7 +278,7 @@ class DB
     return $total;     
   }
 
-    // Checking if exists in deleted
+  // Checking if exists in deleted
   public function check()
   {
     $pdo = $this->getInstance();
@@ -292,7 +292,7 @@ class DB
     }
   }
 
-    // Store in database
+  // Store in database
   public function create()
   {
     $pdo = $this->getInstance();
@@ -304,7 +304,7 @@ class DB
     return $status;
   }
 
-    // Returning ID of last inserted data
+  // Returning ID of last inserted data
   public function getLastId() 
   {
     $id = $this->lastId;
@@ -312,7 +312,7 @@ class DB
     return $id;     
   }
 
-    // Update database column
+  // Update database column
   public function update()
   {
     $pdo = $this->getInstance();
@@ -323,7 +323,7 @@ class DB
     return $status;
   }
 
-    // delete database column
+  // delete database column
   public function delete()
   {
     $pdo = $this->getInstance();
@@ -342,12 +342,12 @@ class DB
     return $status;
   }
 
-    // Get Last MySQL command
+  // Get Last MySQL command
   public function getLastSQL(){
     return $this->sqlQuery;
   }
 
-    // Create pagination data array
+  // Create pagination data array
   public function paginationData(){
 
     $total = $this->getTotal();
@@ -364,7 +364,7 @@ class DB
     
   }
 
-    // function for generating pagination pages
+  // function for generating pagination pages
   public function generatePages($page=1, $totalPages=1, $url='javascript:void(0);', $pagXml='pagination'){  
 
     $param = '?page';
@@ -476,7 +476,7 @@ class DB
     return $pagination;
   }
 
-    // Create pagination
+  // Create pagination
   public function pagination(){
 
     $data = $this->paginationData();

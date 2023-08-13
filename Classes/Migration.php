@@ -13,7 +13,7 @@ class Migration
   private static $db_password = DB_PASSWORD;
   private static $db_database = DB_DATABASE;
 
-    // Execute Database Queries
+  // Execute Database Queries
   public static function executeQueries($database_files = array())
   {
 
@@ -23,7 +23,7 @@ class Migration
 
       $con=mysqli_connect(self::$db_host, self::$db_username, self::$db_password, self::$db_database);
 
-      // Check connection
+    // Check connection
       if (mysqli_connect_errno()){
         array_push($messages, ['type' => "danger", 'text' => "Error: Failed to connect to MySQL! " . mysqli_connect_error()]);
       }
@@ -56,7 +56,7 @@ class Migration
         array_push($all_keys, $migration['migration']);
       }
 
-      // Include Queries
+    // Include Queries
       foreach ($database_files as $files){
 
         $queries = include $files;
@@ -66,7 +66,7 @@ class Migration
             array_push($messages, ['type' => "warning", 'text' => 'Warning: Migration `'.ucwords(str_replace("_", " ", $key)).'` already exists! Migration skipped.']);
           }
           else{
-              // Execute Query
+            // Execute Query
             $status = mysqli_query($con, $value);
             if($status){
               mysqli_query($con, 'INSERT INTO migrations (migration, batch) VALUES ("'.$key.'", '.time().')');
@@ -89,23 +89,23 @@ class Migration
 
   }
 
-    // Generate Views
+  // Generate Views
   public static function migrationView($action_url='')
   {
-    // Declaring app name
+  // Declaring app name
     $app_name = self::$app_name;
 
-    // Styles
+  // Styles
     $styles = '<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">';
     $styles .= '<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">';
 
-    // Scripts
+  // Scripts
     $scripts = '<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>';
     $scripts .= '<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>';
     $scripts .= '<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>';
     $scripts .= '<script src="https://malsup.github.io/jquery.form.js"></script>';
 
-    // Feedback from server
+  // Feedback from server
     $feedback = '';
     if(self::$app_env != 'dev'){
       $feedback = '<h4 class="text-muted"><i class="far fa-frown pr-2"></i>Oops..</h4><p class="text-danger">Migration is unavialable at the moment!</p>';
@@ -187,7 +187,7 @@ class Migration
 
     <script>    
 
-        // Execute Queries
+      // Execute Queries
       (function() {
         $('.execute-form').ajaxForm({
           beforeSend: function() {
