@@ -11,6 +11,10 @@ class CodeCube
         try{
 
             ob_start();
+
+            // Checking missing configuration files
+            foreach ($config_files as $file)
+                if(!file_exists($file))  throw new \Exception('Essential project configuration file missing: '.str_replace('/', '&#47;',$file));
         
             // Include environment configuration files
             $env_array = include($config_files['env']);
