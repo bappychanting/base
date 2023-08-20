@@ -7,7 +7,7 @@ use Base\Request;
 class BaseController 
 {
 
-    // Function for calling guards
+  // Function for calling guards
   public static function guard($guard='', $parameters = array()){
     if(!empty($guard)){
       if (file_exists("app/Http/Guards/".$guard.".php")){
@@ -21,7 +21,7 @@ class BaseController
     }
   }
 
-    // Fucntion for getting config
+  // Fucntion for getting config
   public static function config($location='')
   {
     $locationArray =  explode(".",$location);
@@ -41,7 +41,7 @@ class BaseController
     }
   }
 
-    // Function for generating view
+  // Function for generating view
   public static function view($_location='', $_data=array())
   {
     $_location_array =  explode(".",$_location);
@@ -81,15 +81,12 @@ class BaseController
     }
   }
 
-    // Function for redirecting to location
+  // Function for redirecting to location
   public static function redirect($route_url, $parameters= array())
   {
-
-    $routes = include("routes/web.php");
-
-    if(array_key_exists($route_url, $routes)){
-
-      if(!empty($parameters) && strpos($route_url, '{') !== false && strpos($route_url, '}') !== false){
+    if(!empty($parameters) && strpos($route_url, '{') !== false && strpos($route_url, '}') !== false){
+      $routes = include("routes/web.php");
+      if(array_key_exists($route_url, $routes)){
         $url_keywords = explode("/", $route_url);
         foreach($url_keywords as $key=>$keyword){
           if(strpos($keyword, '{') == 0  && strpos($keyword, '}') == (strlen($keyword)-1) && array_key_exists(substr($keyword, 1, -1), $parameters)){
@@ -100,32 +97,31 @@ class BaseController
         $link = APP_URL.'/'.implode("/", $url_keywords);
       }
       else{
-        $link = APP_URL.'/'.$route_url;
+        self::abort(500, 'Route '.$route_url.' does not exist!');
+        exit();
       }
-
-      if(!empty($parameters)){
-        $link .= '?';
-        $count = 1;
-        foreach($parameters as $key=>$value){
-          if($count > 1){
-            $link .= '&';
-          }
-          $link .= $key.'='.$value;
-          $count++;
-        }
-      }
-
-      header("Location: ".$link); 
-      exit();
     }
     else{
-      self::abort(500, 'Route '.$route_url.' does not exist!');
+      $link = APP_URL.'/'.$route_url;
     }
 
+    if(!empty($parameters)){
+      $link .= '?';
+      $count = 1;
+      foreach($parameters as $key=>$value){
+        if($count > 1){
+          $link .= '&';
+        }
+        $link .= $key.'='.$value;
+        $count++;
+      }
+    }
+    header("Location: ".$link); 
+    exit;
   }
 
-    // Function for showing error
-  public static function abort($err_type = 404, $message = 'The page you are looking for is not found!'){
+  // Function for showing error
+  public static function abort($err_type = 404, $message = ''){
 
     $err_file = 'resources/views/errors/'.$err_type.'.php';
 

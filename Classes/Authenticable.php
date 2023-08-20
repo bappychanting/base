@@ -16,7 +16,7 @@ class Authenticable
 		$this->request = new Request;
 	}
 
-		// Function for signing in
+	// Function for signing in
 	public function signin($identity='', $password='', $remember = 'remember', $auth_table='users', $identity_field_1='username', $identity_field_2='email', $password_field='password', $attempts_field = 'attempts', $login_token_field = 'login_token') { 
 		$get_user = $this->db->table($auth_table)->where($identity_field_1, '=', $identity)->or($identity_field_2, '=', $identity)->read();  
 		if(count($get_user) == 1){
@@ -55,7 +55,7 @@ class Authenticable
 		}
 	}
 
-    	// Fuction to check if auth
+    // Fuction to check if auth
 	public function check($auth_table='users', $identity_field='username', $token_field='login_token'){
 		$auth = $this->request->show('auth');
 		$remember_me = $this->request->getCookie('remember_me');
@@ -84,7 +84,7 @@ class Authenticable
 		return TRUE;
 	}
 
-    	// Function to get auth data
+    // Function to get auth data
 	public function getAuth(){
 		$auth = $this->request->show('auth');
 		if(!empty($auth)){
@@ -92,25 +92,25 @@ class Authenticable
 		}
 	}
 
-    	// Function for signing out
+    // Function for signing out
 	public function signout(){
 		$this->request->deleteCookie('remember_me');
 		session_destroy();
 	}
 
-    	// Fuction to store password reset link
+    // Fuction to store password reset link
 	public function storeLink($token, $user, $links_table='reset_password_links'){   
 		$store = $this->db->table($links_table)->data(['token' => $token, 'user_id' => $user])->create();
 		return $store;
 	}
 
-    	// Fuction to get password reset link
+    // Fuction to get password reset link
 	public function getLink($token, $links_table='reset_password_links_view'){   
 		$link = $this->db->table($links_table)->where('token', '=', $token)->read(); 
 		return $link[0];
 	}
 
-    	// Fuction to update password reset link validity
+    // Fuction to update password reset link validity
 	public function updateValidity($token, $links_table='reset_password_links'){   
 		$update = $this->db->table($links_table)->set(['validity' => 0])->where('token', '=', $token)->update(); 
 		return $update;

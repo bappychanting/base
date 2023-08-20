@@ -18,7 +18,7 @@ class Mail
 
   /* Setter getter for all variables */
 
-    // Sender setter getter
+  // Sender setter getter
   function setSender($sender){
     $this->sender = strtolower(strip_tags($sender));
   }
@@ -26,7 +26,7 @@ class Mail
     return $this->sender;
   }
 
-    // Reciever setter getter
+  // Reciever setter getter
   function setReceivers($receivers){
     if(is_array($receivers) && count($receivers) >= 1){
       $this->receivers = $receivers;
@@ -36,7 +36,7 @@ class Mail
     return $this->receivers;
   }
 
-    // Carbon Copy setter getter
+  // Carbon Copy setter getter
   function setCarbonCopies($carbonCopies){
     if(is_array($carbonCopies) && count($carbonCopies) >= 1){
       $this->carbonCopies = $carbonCopies;
@@ -46,7 +46,7 @@ class Mail
     return $this->carbonCopies;
   }
 
-    // Blind Carbon Copy setter getter
+  // Blind Carbon Copy setter getter
   function setBlindCarbonCopies($blindCarbonCopies){
     if(is_array($blindCarbonCopies) && count($blindCarbonCopies) >= 1){
       $this->blindCarbonCopies = $blindCarbonCopies;
@@ -56,7 +56,7 @@ class Mail
     return $this->blindCarbonCopies;
   }
 
-    // Subject setter getter
+  // Subject setter getter
   function setSubject($subject){
     $this->subject = ucwords($subject);
   }
@@ -64,7 +64,7 @@ class Mail
     return $this->subject;
   }
 
-    // Message setter getter
+  // Message setter getter
   function setMessage($message){
     $this->message = $message;
   }
@@ -72,7 +72,7 @@ class Mail
     return $this->message;
   }
 
-    // Attachment setter getter
+  // Attachment setter getter
   function setAttachments($attachments){
     if(is_array($attachments) && count($attachments) >= 1){
       $this->attachments = $attachments;
@@ -82,7 +82,7 @@ class Mail
     return $this->attachments;
   }
 
-    // Send SMTP Mail
+  // Send SMTP Mail
   private function sendSMTP(){
 
     $mail = new PHPMailer(TRUE);
@@ -96,7 +96,7 @@ class Mail
     $mail->SMTPSecure = MAIL_ENCRYPTION;      
     $mail->Port       = MAIL_PORT; 
 
-        //Recipients
+    // Recipients
     $mail->setFrom($this->getSender()); 
 
     if(!empty($this->getReceivers())){
@@ -119,8 +119,7 @@ class Mail
       }
     }
 
-        // Attachments
-
+    // Attachments
     if(!empty($this->getAttachments())){
       foreach ($this->getAttachments() as $file => $name) {
         $mail->addAttachment($file, is_numeric($name) ? '' : $name);     
@@ -135,7 +134,7 @@ class Mail
 
   }
 
-    // Create the message body
+  // Create the message body
   public function createMessage($mailXml='mail'){
 
     if (file_exists('resources/markups/'.$mailXml.'.xml')){
@@ -157,7 +156,7 @@ class Mail
 
   }
 
-    // Send Mail
+  // Send Mail
   public function send(){
 
     switch(MAIL_DRIVER) {
