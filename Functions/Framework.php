@@ -353,4 +353,20 @@ function get_url()
   return $url;
 }
 
+// Function for debugging
+function dd($var, $details=FALSE)
+{
+  if($details){
+    die(var_dump($var));
+  }
+  else{
+    if(is_array($var)){
+      die(print_r($var));
+    }
+    else{
+      die($var);
+    }
+  }
+}
+
 ?>
