@@ -21,11 +21,6 @@ class CodeCube
                 $console = new BaseConsole($argc, $argv);
                 $console(include($config_files['commands']));
             }
-
-            /* if(isset($argc) && $argc > 0 && $argv[1] == 'migrate'){
-                Migration::executeQueries($argv[2]??'', glob("database/*.php"));
-                throw new \Exception('Done!');
-            } */
         
             // Set default project routes
             $default = include($config_files['default']);
