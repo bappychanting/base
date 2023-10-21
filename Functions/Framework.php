@@ -354,19 +354,20 @@ function get_url()
 }
 
 // Function for debugging
-function dd($var, $details=FALSE)
+function dd(...$vararg)
 {
-  if($details){
-    die(var_dump($var));
-  }
-  else{
+  foreach($vararg as $var){
+    echo "<pre>";
     if(is_array($var)){
-      die(print_r($var));
+      print_r(nl2br($var."\n"));
     }
     else{
-      die($var);
+      echo nl2br($var."\n");
     }
+    var_dump($var);
+    echo nl2br("\n</pre>");
   }
+  die();
 }
 
 ?>

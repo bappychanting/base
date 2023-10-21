@@ -57,6 +57,7 @@ class BaseController
     }
 
     if(file_exists($_file)){
+      ob_start();
       if(isset($_SESSION['processing_token'])){
         $token_data = getTokenData();
         if($token_data['url'] != $_SERVER['REQUEST_URI']){
@@ -75,6 +76,7 @@ class BaseController
         $_SESSION['tokens'][$generated_token] = ['url' => $_SERVER['REQUEST_URI'], 'time' => time(), 'csrf_token' => $generated_token];
         include($_file);
       }
+      ob_end_flush();
     }
     else{
       throw new \Exception('View '.$_file.' not found!');
