@@ -133,8 +133,6 @@ function call($route_url =''){
 
   if(file_exists('app/Http/Controllers/'.$controller.'.php')){
 
-    require_once('app/Http/Controllers/'.$controller.'.php');
-
     $controller_class = 'App\Http\Controllers\\'.str_replace('/', '\\', $controller);
 
     if(method_exists($controller_class , $method)) {    

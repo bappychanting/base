@@ -17,6 +17,7 @@ class CodeCube
             $env_array = include($config_files['env']);
             foreach($env_array as $env=>$value) define($env, $value);
         
+            // Call Commands
             if(isset($argc) && $argc > 0){
                 $console = new BaseConsole($argc, $argv);
                 $console(include($config_files['commands']));

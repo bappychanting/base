@@ -17,7 +17,6 @@ class BaseConsole
   public function __invoke($command_list)
   {
     if($this->count > 0 && array_key_exists($this->args[1], $command_list)){
-      require_once('app/Console/Handlers/'.$command_list[$this->args[1]].'.php');
       $console_class = 'App\Console\Handlers\\'.str_replace('/', '\\',$command_list[$this->args[1]]);
       $method = 'handle';
   
