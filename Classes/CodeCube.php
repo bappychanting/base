@@ -73,8 +73,8 @@ class CodeCube
 	{
         if(!isset(self::$execute)){
             self::$execute = new CodeCube($config_files, $argc, $argv);
-         }
-         return self::$execute;
+        }
+        return self::$execute;
 	}
 
 }
