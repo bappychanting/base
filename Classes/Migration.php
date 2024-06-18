@@ -5,7 +5,6 @@ namespace Base;
 class Migration
 {
 
-  private static $app_name = APP_NAME;
   private static $app_env = APP_ENV;
   private static $db_host = DB_HOST;
   private static $db_username = DB_USERNAME;
@@ -65,7 +64,7 @@ class Migration
 
         foreach ($queries as $key=>$value){
           if(in_array($key, $all_keys)){
-            array_push($messages, ['type' => "warning", 'text' => 'Warning: Migration `'.ucwords(str_replace("_", " ", $key)).'` already exists! Migration skipped.']);
+            self::output('Warning: Migration `'.ucwords(str_replace("_", " ", $key)).'` already exists! Migration skipped.');
           }
           else{
             // Execute Query

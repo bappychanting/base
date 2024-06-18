@@ -9,9 +9,6 @@ class CodeCube
 	private function __construct($config_files, $argc, $argv) 
 	{
         try{
-
-            ob_start();
-
             // Checking missing configuration files
             foreach ($config_files as $file)
                 if(!file_exists($file))  throw new \Exception('Essential project configuration file missing: '.str_replace('/', '&#47;',$file));
@@ -20,9 +17,10 @@ class CodeCube
             $env_array = include($config_files['env']);
             foreach($env_array as $env=>$value) define($env, $value);
         
-            if(isset($argc) && $argc > 0 && $argv[1] == 'migrate'){
-                Migration::executeQueries($argv[2]??'', glob("database/*.php"));
-                throw new \Exception('Done!');
+            // Call Commands
+            if(isset($argc) && $argc > 0){
+                $console = new BaseConsole($argc, $argv);
+                $console(include($config_files['commands']));
             }
         
             // Set default project routes
@@ -69,17 +67,14 @@ class CodeCube
         catch (\Exception $e){
             die(json_encode(['status'=>$e->getCode(), 'reason'=>$e->getMessage()]));
         }
-        finally{
-            ob_end_flush();
-        } 
 	}
 
     public static function start($config_files, $argc, $argv) 
 	{
         if(!isset(self::$execute)){
             self::$execute = new CodeCube($config_files, $argc, $argv);
-         }
-         return self::$execute;
+        }
+        return self::$execute;
 	}
 
 }
